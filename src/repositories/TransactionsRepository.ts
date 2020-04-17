@@ -56,6 +56,10 @@ class TransactionsRepository {
   public create({ title, value, type }: CreateTransaction): Transaction {
     // TODO
     const transaction = new Transaction({ title, value, type });
+    const { total } = this.getBalance();
+    if (type === 'outcome' && total < value) {
+      throw Error('Insufficiente value for this operation');
+    }
     this.transactions.push(transaction);
     return transaction;
   }
